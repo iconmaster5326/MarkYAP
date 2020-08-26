@@ -1,4 +1,11 @@
 {
+  "name": "markyap",
+  "version": "0.1.0",
+  "description": "A markup language for formatting rich text in DSLs.",
+  "main": "index.js",
+  "repository": "https://github.com/iconmaster5326/MarkYAP.git",
+  "author": "iconmaster5326 <crazybonesj@yahoo.com>",
+  "license": "MIT",
   "dependencies": {
     "pegjs": "^0.10.0"
   }
