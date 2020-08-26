@@ -6,7 +6,14 @@
   "repository": "https://github.com/iconmaster5326/MarkYAP.git",
   "author": "iconmaster5326 <crazybonesj@yahoo.com>",
   "license": "MIT",
+  "type": "module",
   "dependencies": {
     "pegjs": "^0.10.0"
+  },
+  "devDependencies": {
+    "mocha": "^8.1.2"
+  },
+  "scripts": {
+    "test": "mocha"
   }
 }
