@@ -2,7 +2,7 @@
   "name": "markyap",
   "version": "0.1.0",
   "description": "A markup language for formatting rich text in DSLs.",
-  "main": "index.js",
+  "main": "src/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/iconmaster5326/MarkYAP.git"
@@ -32,6 +32,7 @@
     "webpack-stream": "^6.0.0"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "build": "gulp"
   }
 }

@@ -8,7 +8,7 @@ import rename from "gulp-rename";
 import del from "del";
 
 const HEADER = `
-import { Tag, PosArg, OptArg, Paragraph } from "../classes.js";
+import { Tag, PosArg, OptArg, Paragraph } from "../src/classes.js";
 `;
 const FOOTER = `
 var parse = peg$parse;
@@ -23,7 +23,7 @@ module.exports = {
 
 function parser() {
   return gulp
-    .src("markyap.pegjs")
+    .src("src/markyap.pegjs")
     .pipe(pegjs({ format: "commonjs" }))
     .pipe(header(HEADER))
     .pipe(footer(FOOTER))
@@ -34,7 +34,7 @@ function parser() {
 
 const bundle = gulp.series(parser, function bundleImpl() {
   return gulp
-    .src("index.js")
+    .src("src/index.js")
     .pipe(webpack(import("./webpack.config.cjs")))
     .pipe(rename("main.js"))
     .pipe(gulp.dest("dist"));
@@ -45,4 +45,4 @@ function clean() {
 }
 
 export { parser, bundle, clean };
-export default gulp.series(bundle);
+export default bundle;
