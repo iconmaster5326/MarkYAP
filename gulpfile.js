@@ -3,9 +3,12 @@ import pegjs from "gulp-pegjs";
 import header from "gulp-header";
 import footer from "gulp-footer";
 import replace from "gulp-replace";
+import webpack from "webpack-stream";
+import rename from "gulp-rename";
+import del from "del";
 
 const HEADER = `
-import { Tag, PosArg, OptArg, Paragraph } from "./classes.js";
+import { Tag, PosArg, OptArg, Paragraph } from "../classes.js";
 `;
 const FOOTER = `
 var parse = peg$parse;
@@ -21,12 +24,25 @@ module.exports = {
 function parser() {
   return gulp
     .src("markyap.pegjs")
-    .pipe(pegjs({ format: "commonjs", exportVar: "parser" }))
+    .pipe(pegjs({ format: "commonjs" }))
     .pipe(header(HEADER))
     .pipe(footer(FOOTER))
     .pipe(replace(TO_REMOVE, ""))
-    .pipe(gulp.dest("."));
+    .pipe(rename("parser.js"))
+    .pipe(gulp.dest("dist"));
 }
 
-export { parser };
-export default parser;
+const bundle = gulp.series(parser, function bundleImpl() {
+  return gulp
+    .src("index.js")
+    .pipe(webpack(import("webpack.config.cjs")))
+    .pipe(rename("main.js"))
+    .pipe(gulp.dest("dist"));
+});
+
+function clean() {
+  return del(["dist", "markyap.js"]);
+}
+
+export { parser, bundle, clean };
+export default gulp.series(parser);

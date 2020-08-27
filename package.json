@@ -3,21 +3,33 @@
   "version": "0.1.0",
   "description": "A markup language for formatting rich text in DSLs.",
   "main": "index.js",
-  "repository": "https://github.com/iconmaster5326/MarkYAP.git",
-  "author": "iconmaster5326 <crazybonesj@yahoo.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/iconmaster5326/MarkYAP.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/iconmaster5326/MarkYAP/issues"
+  },
+  "homepage": "https://github.com/iconmaster5326/MarkYAP",
+  "author": "iconmaster5326 <crazybonesj@yahoo.com> (https://iconmaster.info)",
   "license": "MIT",
   "type": "module",
   "dependencies": {
     "pegjs": "^0.10.0"
   },
   "devDependencies": {
+    "del": "^5.1.0",
     "eslint": "^7.7.0",
     "gulp": "^4.0.2",
     "gulp-footer": "^2.0.2",
     "gulp-header": "^2.0.9",
     "gulp-pegjs": "^0.2.0",
+    "gulp-rename": "^2.0.0",
     "gulp-replace": "^1.0.0",
-    "mocha": "^8.1.2"
+    "mocha": "^8.1.2",
+    "webpack": "^4.44.1",
+    "webpack-stream": "^6.0.0"
   },
   "scripts": {
     "test": "mocha"
