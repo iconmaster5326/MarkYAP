@@ -1,5 +1,5 @@
 {
-  import { Tag, PosArg, OptArg, Paragraph } from "./classes.js";
+  // imports are declared in the gulpfile, because pegjs is poop and doesn't support ES6 modules
 
   class RawString {
     constructor(value) {
