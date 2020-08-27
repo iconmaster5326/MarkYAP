@@ -36,7 +36,6 @@ const bundle = gulp.series(parser, function bundleImpl() {
     output: {
       filename: "bundle.js",
       libraryTarget: "commonjs2",
-      libraryExport: "default",
     },
     module: {
       rules: [
