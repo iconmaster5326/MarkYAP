@@ -4,10 +4,10 @@ MarkYAP (short for "markup, yet another permutation") is a format for formatting
 
 Features include:
 
-* It looks like LaTeX format! But it's not!
-* Markup tag can be given both positional and optional arguments!
-* Support for embedding unformatted text!
-* Extensible to all your markup needs!
+- It looks like LaTeX format! But it's not!
+- Markup tag can be given both positional and optional arguments!
+- Support for embedding unformatted text!
+- Extensible to all your markup needs!
 
 ## Specification
 

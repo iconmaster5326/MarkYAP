@@ -6,6 +6,8 @@ import replace from "gulp-replace";
 import webpack from "webpack-stream";
 import rename from "gulp-rename";
 import del from "del";
+import prettier from "gulp-prettier";
+import eslint from "gulp-eslint";
 
 function parser() {
   const HEADER = `
@@ -63,5 +65,53 @@ function clean() {
   return del(["dist"]);
 }
 
-export { parser, bundle, clean };
+const FORMAT_TYPES = ["js", "yaml", "yml", "pegjs", "md", "json"];
+
+function makeFormatter(dir, check = false) {
+  var cmd;
+  if (check) {
+    cmd = prettier.check;
+  } else {
+    cmd = prettier;
+  }
+
+  var fn = function () {
+    return gulp
+      .src(
+        FORMAT_TYPES.map((f) => dir + "/*." + f).concat(
+          FORMAT_TYPES.map((f) => dir + "/.*." + f)
+        )
+      )
+      .pipe(cmd())
+      .pipe(gulp.dest(dir));
+  };
+  Object.defineProperty(fn, "name", {
+    value: "format" + dir,
+  });
+  return fn;
+}
+
+const format = gulp.parallel(
+  makeFormatter("."),
+  makeFormatter("src"),
+  makeFormatter("test"),
+  makeFormatter(".github/workflows")
+);
+
+const checkFormat = gulp.parallel(
+  makeFormatter(".", true),
+  makeFormatter("src", true),
+  makeFormatter("test", true),
+  makeFormatter(".github/workflows", true)
+);
+
+function lint() {
+  return gulp
+    .src(["*.js", "src/*.js", "test/*.js"])
+    .pipe(eslint())
+    .pipe(eslint.format("stylish", process.stderr))
+    .pipe(eslint.failAfterError());
+}
+
+export { parser, bundle, clean, format, checkFormat, lint };
 export default bundle;
