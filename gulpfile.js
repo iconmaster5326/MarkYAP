@@ -35,14 +35,14 @@ function parser() {
 const bundle = gulp.series(parser, function bundleImpl() {
   return gulp
     .src("index.js")
-    .pipe(webpack(import("webpack.config.cjs")))
+    .pipe(webpack(import("./webpack.config.cjs")))
     .pipe(rename("main.js"))
     .pipe(gulp.dest("dist"));
 });
 
 function clean() {
-  return del(["dist", "markyap.js"]);
+  return del(["dist"]);
 }
 
 export { parser, bundle, clean };
-export default gulp.series(parser);
+export default gulp.series(bundle);
