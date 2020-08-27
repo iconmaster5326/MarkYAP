@@ -1,3 +1,3 @@
-import * as markyap from "../src/index.js";
+import markyap from "../src/index.js";
 
 markyap.parse("hello world");

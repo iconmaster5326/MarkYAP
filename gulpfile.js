@@ -7,21 +7,19 @@ import webpack from "webpack-stream";
 import rename from "gulp-rename";
 import del from "del";
 
-const HEADER = `
-import { Tag, PosArg, OptArg, Paragraph } from "../src/classes.js";
-`;
-const FOOTER = `
+function parser() {
+  const HEADER = `
+import { Tag, PosArg, OptArg, Paragraph } from "../src/classes.js";`;
+  const FOOTER = `
 var parse = peg$parse;
 var SyntaxError = peg$SyntaxError;
-export { parse, SyntaxError };
-`;
-const TO_REMOVE = `
+export { parse, SyntaxError };`;
+  const TO_REMOVE = `
 module.exports = {
   SyntaxError: peg$SyntaxError,
   parse:       peg$parse
 };`;
 
-function parser() {
   return gulp
     .src("src/markyap.pegjs")
     .pipe(pegjs({ format: "commonjs" }))
@@ -33,10 +31,32 @@ function parser() {
 }
 
 const bundle = gulp.series(parser, function bundleImpl() {
+  const WEBPACK_CONFIG = {
+    mode: "production",
+    output: {
+      filename: "bundle.js",
+      libraryTarget: "commonjs2",
+      libraryExport: "default",
+    },
+    module: {
+      rules: [
+        {
+          test: /\.js$/,
+          exclude: /node_modules/,
+          use: {
+            loader: "babel-loader",
+            options: {
+              presets: ["@babel/preset-env"],
+            },
+          },
+        },
+      ],
+    },
+  };
+
   return gulp
     .src("src/index.js")
-    .pipe(webpack(import("./webpack.config.cjs")))
-    .pipe(rename("main.js"))
+    .pipe(webpack(WEBPACK_CONFIG))
     .pipe(gulp.dest("dist"));
 });
 
