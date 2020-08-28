@@ -11,7 +11,7 @@ Features include:
 
 ## Specification
 
-All formatting tags in MarkYAP begin with a `\`:
+The standard extension for MarkYAP files is `.yap`. All formatting tags in MarkYAP begin with a `\`:
 
 ```latex
 hello \tag world! \othertag
@@ -61,3 +61,31 @@ Speaking of `*`, there also exists a special form of tag that simply pastes the 
 ```
 
 And that is all the syntax of MarkYAP. Moreover, the set of predefined tags is almost nonexistent, as MarkYAP is designed for use in DSLs and other places where you have a lot of rich text but also a lot of information to encode, where Markdown or similar just won't cut it.
+
+## MarkYAP As A Library
+
+### Installation
+
+```sh
+npm install markyap
+```
+
+## Usage
+
+```js
+import markyap from "markyap"; // if using ES6 modules
+var markyap = require("markyap"); // if using CommonJS modules
+
+var parsedMarkyap = markyap.parse("some \\example{code}!");
+for (var paragraph of parsedMarkyap) {
+  for (var textOrTag of paragraph.children) {
+    if (textOrTag instanceof markyap.Tag) {
+      console.log(
+        "tag: " + textOrTag.name + " with arg " + textOrTag.args[0].text
+      );
+    } else {
+      console.log("raw text: " + textOrTag);
+    }
+  }
+}
+```
