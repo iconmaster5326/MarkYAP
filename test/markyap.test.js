@@ -612,4 +612,87 @@ describe("MarkYAP", function () {
       chai.expect(result[0].text).to.equal("\\a \\b{c} \\d[e=f] \\g{h}[i=]");
     });
   });
+
+  describe("Visitor", function () {
+    it("basic usage", function () {
+      var visitor = new markyap.Visitor({});
+      visitor.visit(
+        markyap.parse(`hello\\world{with}[many=\\args{some}{are}[\\nested]]`)
+      );
+    });
+
+    it("tag handler", function () {
+      var foundNested = false,
+        foundNotNested = false;
+      var visitor = new markyap.Visitor({
+        visitTag: {
+          nested: function (t) {
+            foundNested = true;
+            chai.expect(t).to.be.instanceOf(markyap.Tag);
+            chai.expect(t.name).to.be.equal("nested");
+          },
+        },
+        visitUnknownTag: function (t) {
+          foundNotNested = true;
+          chai.expect(t).to.be.instanceOf(markyap.Tag);
+          chai.expect(t.name).to.be.not.equal("nested");
+        },
+      });
+
+      visitor.visit(
+        markyap.parse("hello\\world{with}[many=\\args{some}{are}[\\nested]]")
+      );
+
+      chai.expect(foundNested).to.be.true;
+      chai.expect(foundNotNested).to.be.true;
+    });
+
+    it("replace", function () {
+      var visitor = new markyap.Visitor({
+        visitTag: {
+          nested: () => markyap.Visitor.replace("!!!"),
+        },
+      });
+
+      var doc = markyap.parse(
+        "hello\\world{with}[many=\\args{some}{are}[\\nested]]"
+      );
+      visitor.visit(doc);
+      chai
+        .expect(doc[0].text)
+        .to.be.equal("hello\\world{with}[many=\\args{some}{are}[!!!=]]");
+
+      visitor = new markyap.Visitor({
+        visitTag: {
+          world: () => markyap.Visitor.replace("???"),
+        },
+      });
+      visitor.visit(doc);
+      chai.expect(doc[0].text).to.be.equal("hello???");
+    });
+
+    it("delete", function () {
+      var visitor = new markyap.Visitor({
+        visitTag: {
+          nested: () => markyap.Visitor.delete(),
+        },
+      });
+
+      var doc = markyap.parse(
+        "hello\\world{with}[many=\\args{some}{are}[\\nested]]"
+      );
+      visitor.visit(doc);
+      chai
+        .expect(doc[0].text)
+        .to.be.equal("hello\\world{with}[many=\\args{some}{are}[=]]");
+
+      visitor = new markyap.Visitor({
+        visitTag: {
+          world: () => markyap.Visitor.delete(),
+        },
+      });
+      visitor.visit(doc);
+      chai.expect(doc[0].text).to.be.equal("hello");
+    });
+  });
 });

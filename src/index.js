@@ -4,9 +4,10 @@
  */
 
 import { Tag, PosArg, OptArg, Paragraph } from "./classes.js";
+import { Visitor } from "./visitor.js";
 import { parse, SyntaxError } from "../dist/parser.js";
 
-export { Tag, PosArg, OptArg, Paragraph, parse, SyntaxError };
+export { Tag, PosArg, OptArg, Paragraph, parse, SyntaxError, Visitor };
 export default {
   Tag: Tag,
   PosArg: PosArg,
@@ -14,6 +15,7 @@ export default {
   Paragraph: Paragraph,
   parse: parse,
   SyntaxError: SyntaxError,
+  Visitor: Visitor,
 };
 
 /**
