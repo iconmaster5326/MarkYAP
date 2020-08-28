@@ -86,7 +86,7 @@ function makeFormatter(dir, check = false) {
       .pipe(gulp.dest(dir));
   };
   Object.defineProperty(fn, "name", {
-    value: "format" + dir,
+    value: "format " + dir + (check ? " check" : ""),
   });
   return fn;
 }
