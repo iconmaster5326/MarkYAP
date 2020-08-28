@@ -10,6 +10,7 @@ import prettier from "gulp-prettier";
 import eslint from "gulp-eslint";
 // import mocha from "gulp-mocha";
 import c8 from "gulp-mocha-c8";
+import jsdoc from "gulp-jsdoc3";
 
 function parser() {
   const HEADER = `
@@ -137,5 +138,9 @@ function coverage() {
   );
 }
 
-export { parser, bundle, clean, format, checkFormat, lint, coverage };
+function doc() {
+  return gulp.src(["README.md", "src/**/*.js"]).pipe(jsdoc());
+}
+
+export { parser, bundle, clean, format, checkFormat, lint, coverage, doc };
 export default bundle;

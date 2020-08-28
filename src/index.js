@@ -1,3 +1,8 @@
+/**
+ * @module markyap
+ * @description Core MarkYAP parsing utilities.
+ */
+
 import { Tag, PosArg, OptArg, Paragraph } from "./classes.js";
 import { parse, SyntaxError } from "../dist/parser.js";
 
@@ -10,3 +15,16 @@ export default {
   parse: parse,
   SyntaxError: SyntaxError,
 };
+
+/**
+ * @function parse
+ * @description Parses a MarkYAP format file and returns an array of paragraphs.
+ * @param {string} input - The MarkYAP text to parse.
+ * @returns {Array.<Paragraph>} The parsed MarkYAP text.
+ * @throws {SyntaxError}
+ */
+
+/**
+ * @class SyntaxError
+ * @description A PegJS syntax error. Thrown by {@link parse} when an issue occurs.
+ */
