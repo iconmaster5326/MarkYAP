@@ -8,10 +8,14 @@ import rename from "gulp-rename";
 import del from "del";
 import prettier from "gulp-prettier";
 import eslint from "gulp-eslint";
+// import mocha from "gulp-mocha";
+import c8 from "gulp-mocha-c8";
 
 function parser() {
   const HEADER = `
-import { Tag, PosArg, OptArg, Paragraph } from "../src/classes.js";`;
+import { Tag, PosArg, OptArg, Paragraph } from "../src/classes.js";
+import { RawString, paragraphify, postprocessList } from "../src/parserUtils.js";
+`;
   const FOOTER = `
 var parse = peg$parse;
 var SyntaxError = peg$SyntaxError;
@@ -118,5 +122,20 @@ function lint() {
     .pipe(eslint.failAfterError());
 }
 
-export { parser, bundle, clean, format, checkFormat, lint };
+// TODO: gulp-mocha is broken because (ONCE AGAIN) es6 modules
+// function test() {
+//   return gulp.src("test/*.test.js").pipe(mocha());
+// }
+
+function coverage() {
+  return gulp.src("test/*.test.js").pipe(
+    c8({
+      c8Opts: {
+        exclude: "dist",
+      },
+    })
+  );
+}
+
+export { parser, bundle, clean, format, checkFormat, lint, coverage };
 export default bundle;

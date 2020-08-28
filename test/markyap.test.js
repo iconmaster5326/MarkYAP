@@ -26,6 +26,99 @@ describe("MarkYAP", function () {
           .to.be.a("string")
           .and.equal("body");
       });
+
+      it("string list", function () {
+        var v = new markyap.Tag("name", ["arg1", "arg2"]);
+        chai.expect(v.name).to.be.equal("name");
+        chai.expect(v.args).to.be.an("array").with.length(2);
+
+        chai.expect(v.args[0]).to.be.an.instanceOf(markyap.PosArg);
+        chai.expect(v.args[0].value).to.be.an("array").with.length(1);
+        chai.expect(v.args[0].value[0]).to.be.an.instanceOf(markyap.Paragraph);
+        chai
+          .expect(v.args[0].value[0].children)
+          .to.be.an("array")
+          .with.length(1);
+        chai
+          .expect(v.args[0].value[0].children[0])
+          .to.be.a("string")
+          .and.equal("arg1");
+
+        chai.expect(v.args[1]).to.be.an.instanceOf(markyap.PosArg);
+        chai.expect(v.args[1].value).to.be.an("array").with.length(1);
+        chai.expect(v.args[1].value[0]).to.be.an.instanceOf(markyap.Paragraph);
+        chai
+          .expect(v.args[1].value[0].children)
+          .to.be.an("array")
+          .with.length(1);
+        chai
+          .expect(v.args[1].value[0].children[0])
+          .to.be.a("string")
+          .and.equal("arg2");
+      });
+    });
+
+    describe("PosArg", function () {
+      it("default", function () {
+        var v = new markyap.PosArg([]);
+        chai.expect(v.raw).to.be.false;
+        chai.expect(v.value).to.be.an("array").and.empty;
+      });
+
+      it("string", function () {
+        var v = new markyap.PosArg("hello world");
+        chai.expect(v.raw).to.be.false;
+        chai.expect(v.value).to.be.an("array").and.with.length(1);
+        chai.expect(v.value[0]).to.be.instanceOf(markyap.Paragraph);
+        chai.expect(v.value[0].children).to.be.an("array").and.with.length(1);
+        chai
+          .expect(v.value[0].children[0])
+          .to.be.a("string")
+          .and.equal("hello world");
+      });
+
+      it("string list", function () {
+        var v = new markyap.PosArg(["hello", "world"]);
+        chai.expect(v.raw).to.be.false;
+        chai.expect(v.value).to.be.an("array").and.with.length(2);
+        chai.expect(v.value[0]).to.be.instanceOf(markyap.Paragraph);
+
+        chai.expect(v.value[0].children).to.be.an("array").and.with.length(1);
+        chai
+          .expect(v.value[0].children[0])
+          .to.be.a("string")
+          .and.equal("hello");
+
+        chai.expect(v.value[1].children).to.be.an("array").and.with.length(1);
+        chai
+          .expect(v.value[1].children[0])
+          .to.be.a("string")
+          .and.equal("world");
+      });
+
+      it("nested string list", function () {
+        var v = new markyap.PosArg([
+          ["hello", "1"],
+          ["world", "2"],
+        ]);
+        chai.expect(v.raw).to.be.false;
+        chai.expect(v.value).to.be.an("array").and.with.length(2);
+        chai.expect(v.value[0]).to.be.instanceOf(markyap.Paragraph);
+
+        chai.expect(v.value[0].children).to.be.an("array").and.with.length(2);
+        chai
+          .expect(v.value[0].children[0])
+          .to.be.a("string")
+          .and.equal("hello");
+        chai.expect(v.value[0].children[1]).to.be.a("string").and.equal("1");
+
+        chai.expect(v.value[1].children).to.be.an("array").and.with.length(2);
+        chai
+          .expect(v.value[1].children[0])
+          .to.be.a("string")
+          .and.equal("world");
+        chai.expect(v.value[1].children[1]).to.be.a("string").and.equal("2");
+      });
     });
   });
 

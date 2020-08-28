@@ -33,7 +33,7 @@ class Tag {
 }
 
 class PosArg {
-  constructor(value, raw, location) {
+  constructor(value, raw = false, location) {
     this.value = value; // a list of Paragraphs
     this.raw = raw;
     this.location = location;
@@ -55,7 +55,7 @@ class PosArg {
 }
 
 class OptArg {
-  constructor(key, value, raw, location) {
+  constructor(key, value, raw = false, location) {
     this.key = key; // a list of Paragraphs
     this.value = value; // a list of Paragraphs
     this.raw = raw;
