@@ -41,7 +41,7 @@ const bundle = gulp.series(parser, function bundleImpl() {
   const WEBPACK_CONFIG = {
     mode: "production",
     output: {
-      filename: "bundle.js",
+      filename: "bundle.cjs",
       libraryTarget: "commonjs2",
     },
     module: {

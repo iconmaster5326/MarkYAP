@@ -1,0 +1,7 @@
+/coverage/
+/docs/
+/markyap-*.tgz
+/test/
+/.eslintrc.yml
+/gulpfile.js
+/.github/
