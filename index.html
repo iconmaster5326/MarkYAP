@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>Documentation Index</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.cerulean.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top ">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">Documentation</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="module-markyap.html">markyap</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="OptArg.html">OptArg</a></li><li><a href="Paragraph.html">Paragraph</a></li><li><a href="PosArg.html">PosArg</a></li><li><a href="SyntaxError.html">SyntaxError</a></li><li><a href="Tag.html">Tag</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="global.html#parse">parse</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+        
+            <div class="col-sm-3 col-md-3">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-8">
+	
+		<div id="main">
+			
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+
+
+
+
+
+    <section class="readme-section">
+        <article><h1>MarkYAP</h1>
+<p>MarkYAP (short for &quot;markup, yet another permutation&quot;) is a format for formatting rich text in an extensible, consistent, and readable manner.</p>
+<p>Features include:</p>
+<ul>
+<li>It looks like LaTeX format! But it's not!</li>
+<li>Markup tag can be given both positional and optional arguments!</li>
+<li>Support for embedding unformatted text!</li>
+<li>Extensible to all your markup needs!</li>
+</ul>
+<h2>Specification</h2>
+<p>All formatting tags in MarkYAP begin with a <code>\</code>:</p>
+<pre class="prettyprint source lang-latex"><code>hello \tag world! \othertag
+</code></pre>
+<p>A basic tag has a name, which may be composed of any non-whitespace, non-special characters. The special characters in MarkYAP are the following:</p>
+<pre class="prettyprint source"><code>\ { } [ ] ( ) = * &quot;
+</code></pre>
+<p>They may be prepended with a backslash to escape them; however, this is optional depending on where in the document the character lies. Note that <code>(</code>, <code>)</code>, and <code>&quot;</code> are currently unused, so you don't have to bother escaping them, but are reserved for future use.</p>
+<pre class="prettyprint source lang-latex"><code>{ these braces will be put literally in the output }
+\but { these will not }
+\although \{ these will! \}
+</code></pre>
+<p>A tag can have zero or more arguments. These arguments can be positional or named. Positional arguments are given using <code>{}</code> syntax:</p>
+<pre class="prettyprint source lang-latex"><code>hello \b{world}!
+3*2 is \times{3}{2}. Neat.
+</code></pre>
+<p>Named arguments are given using <code>[=]</code> syntax, and the two types of arguments may be freely interchanged:</p>
+<pre class="prettyprint source lang-latex"><code>\table[rows=5][cols=6]{
+    \row{Hello!}[span=6]
+}
+</code></pre>
+<p>Finally, any argument can be preceded with a <code>*</code> in order to disable the parsing of tags and preserve all whitespace:</p>
+<pre class="prettyprint source lang-latex"><code>Here is a single bold space: \b*{ }. Wow!
+If you want a comment, use \tag*{\#}.
+Did you know this works for \font*[spacing=    ]{optional arguments} too?
+</code></pre>
+<p>Speaking of <code>*</code>, there also exists a special form of tag that simply pastes the text in your document as-is, but ensures all whitespace is preserved:</p>
+<pre class="prettyprint source lang-latex"><code>\*{ = raw text here = }
+</code></pre>
+<p>And that is all the syntax of MarkYAP. Moreover, the set of predefined tags is almost nonexistent, as MarkYAP is designed for use in DSLs and other places where you have a lot of rich text but also a lot of information to encode, where Markdown or similar just won't cut it.</p></article>
+    </section>
+
+
+
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+		<div class="col-md-3">
+			<div id="toc" class="col-md-3 hidden-xs hidden-sm hidden-md"></div>
+		</div>
+	
+
+</div>
+</div>
+
+
+    <div class="modal fade" id="searchResults">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Search results</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
+
+<footer>
+
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.5</a>
+	
+		on August 28th 2020, 5:21:15 pm
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+
+    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			return $( heading ).attr( "id" ) || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            SearcherDisplay.init();
+        });
+    </script>
+
+
+</body>
+</html>
