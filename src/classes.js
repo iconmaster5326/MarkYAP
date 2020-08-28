@@ -192,6 +192,51 @@ class PosArg {
   get text() {
     return this.value.map((v) => v.text).join("\n\n");
   }
+
+  /**
+   * Finds the first tag with a given name,
+   * or else returns null if no such tag was found.
+   *
+   * @param {string} name The tag to look up.
+   * @returns {?Tag} The first tag with that name, or null.
+   */
+  findFirstTag(name) {
+    for (var p of this.value) {
+      var t = p.findFirstTag(name);
+      if (t) {
+        return t;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Finds the last tag with a given name,
+   * or else returns null if no such tag was found.
+   *
+   * @param {string} name The tag to look up.
+   * @returns {?Tag} The last tag with that name, or null.
+   */
+  findLastTag(name) {
+    var result = null;
+    for (var p of this.value) {
+      var t = p.findLastTag(name);
+      if (t) {
+        result = t;
+      }
+    }
+    return result;
+  }
+
+  /**
+   * Returns an array of all the tags that have a given name.
+   *
+   * @param {string} name The name to search for.
+   * @returns {Array.<Tag>} All tags with the given name.
+   */
+  findAllTags(name) {
+    return this.value.flatMap((p) => p.findAllTags(name));
+  }
 }
 
 /**
@@ -253,6 +298,96 @@ class OptArg {
   get valueText() {
     return this.value.map((v) => v.text).join("\n\n");
   }
+
+  /**
+   * Finds the first tag in this argument's key with a given name,
+   * or else returns null if no such tag was found.
+   *
+   * @param {string} name The tag to look up.
+   * @returns {?Tag} The first tag with that name, or null.
+   */
+  findFirstTagInKey(name) {
+    for (var p of this.key) {
+      var t = p.findFirstTag(name);
+      if (t) {
+        return t;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Finds the last tag in this argument's key with a given name,
+   * or else returns null if no such tag was found.
+   *
+   * @param {string} name The tag to look up.
+   * @returns {?Tag} The last tag with that name, or null.
+   */
+  findLastTagInKey(name) {
+    var result = null;
+    for (var p of this.key) {
+      var t = p.findLastTag(name);
+      if (t) {
+        result = t;
+      }
+    }
+    return result;
+  }
+
+  /**
+   * Returns an array of all the tags in this argument's key that have a given name.
+   *
+   * @param {string} name The name to search for.
+   * @returns {Array.<Tag>} All tags with the given name.
+   */
+  findAllTagsInKey(name) {
+    return this.key.flatMap((p) => p.findAllTags(name));
+  }
+
+  /**
+   * Finds the first tag in this argument's value with a given name,
+   * or else returns null if no such tag was found.
+   *
+   * @param {string} name The tag to look up.
+   * @returns {?Tag} The first tag with that name, or null.
+   */
+  findFirstTagInValue(name) {
+    for (var p of this.value) {
+      var t = p.findFirstTag(name);
+      if (t) {
+        return t;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Finds the last tag in this argument's value with a given name,
+   * or else returns null if no such tag was found.
+   *
+   * @param {string} name The tag to look up.
+   * @returns {?Tag} The last tag with that name, or null.
+   */
+  findLastTagInValue(name) {
+    var result = null;
+    for (var p of this.value) {
+      var t = p.findLastTag(name);
+      if (t) {
+        result = t;
+      }
+    }
+    return result;
+  }
+
+  /**
+   * Returns an array of all the tags in this argument's value that have a given name.
+   *
+   * @param {string} name The name to search for.
+   * @returns {Array.<Tag>} All tags with the given name.
+   */
+  findAllTagsInValue(name) {
+    return this.value.flatMap((p) => p.findAllTags(name));
+  }
 }
 
 /**
@@ -294,6 +429,50 @@ class Paragraph {
     return this.children
       .map((c) => (typeof c == "string" ? c : c.text))
       .join("");
+  }
+
+  /**
+   * Finds the first tag in this paragraph with a given name,
+   * or else returns null if no such tag was found.
+   *
+   * @param {string} name The tag to look up.
+   * @returns {?Tag} The first tag with that name, or null.
+   */
+  findFirstTag(name) {
+    for (var t of this.children) {
+      if (t instanceof Tag && t.name == name) {
+        return t;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Finds the last tag in this paragraph with a given name,
+   * or else returns null if no such tag was found.
+   *
+   * @param {string} name The tag to look up.
+   * @returns {?Tag} The last tag with that name, or null.
+   */
+  findLastTag(name) {
+    var result = null;
+    for (var t of this.children) {
+      if (t instanceof Tag && t.name == name) {
+        result = t;
+      }
+    }
+    return result;
+  }
+
+  /**
+   * Returns an array of all the tags in this paragraph
+   * that have a given name.
+   *
+   * @param {string} name The name to search for.
+   * @returns {Array.<Tag>} All tags with the given name.
+   */
+  findAllTags(name) {
+    return this.children.filter((t) => t instanceof Tag && t.name == name);
   }
 }
 

@@ -312,6 +312,271 @@ describe("MarkYAP", function () {
     });
   });
 
+  describe("PosArg", function () {
+    it("findFirstTag", function () {
+      var arg = new markyap.PosArg([
+        [
+          "text",
+          new markyap.Tag("a"),
+          new markyap.Tag("b"),
+          new markyap.Tag("c"),
+          new markyap.Tag("b"),
+        ],
+      ]);
+
+      chai.expect(arg.findFirstTag("a")).to.be.equal(arg.value[0].children[1]);
+      chai.expect(arg.findFirstTag("b")).to.be.equal(arg.value[0].children[2]);
+      chai.expect(arg.findFirstTag("c")).to.be.equal(arg.value[0].children[3]);
+      chai.expect(arg.findFirstTag("d")).to.be.null;
+    });
+
+    it("findLastTag", function () {
+      var arg = new markyap.PosArg([
+        [
+          "text",
+          new markyap.Tag("a"),
+          new markyap.Tag("b"),
+          new markyap.Tag("c"),
+          new markyap.Tag("b"),
+        ],
+      ]);
+
+      chai.expect(arg.findLastTag("a")).to.be.equal(arg.value[0].children[1]);
+      chai.expect(arg.findLastTag("b")).to.be.equal(arg.value[0].children[4]);
+      chai.expect(arg.findLastTag("c")).to.be.equal(arg.value[0].children[3]);
+      chai.expect(arg.findLastTag("d")).to.be.null;
+    });
+
+    it("findAllTags", function () {
+      var arg = new markyap.PosArg([
+        [
+          "text",
+          new markyap.Tag("a"),
+          new markyap.Tag("b"),
+          new markyap.Tag("c"),
+          new markyap.Tag("b"),
+        ],
+      ]);
+
+      chai
+        .expect(arg.findAllTags("a"))
+        .to.be.an("array")
+        .with.length(1)
+        .and.with.ordered.members([arg.value[0].children[1]]);
+      chai
+        .expect(arg.findAllTags("b"))
+        .to.be.an("array")
+        .with.length(2)
+        .and.with.ordered.members([
+          arg.value[0].children[2],
+          arg.value[0].children[4],
+        ]);
+      chai.expect(arg.findAllTags("d")).to.be.an("array").and.empty;
+    });
+  });
+
+  describe("OptArg", function () {
+    it("findFirstTagInKey", function () {
+      var arg = new markyap.OptArg(
+        [
+          [
+            "text",
+            new markyap.Tag("a"),
+            new markyap.Tag("b"),
+            new markyap.Tag("c"),
+            new markyap.Tag("b"),
+          ],
+        ],
+        [
+          [
+            "more text",
+            new markyap.Tag("c"),
+            new markyap.Tag("c"),
+            new markyap.Tag("e"),
+          ],
+        ]
+      );
+
+      chai
+        .expect(arg.findFirstTagInKey("a"))
+        .to.be.equal(arg.key[0].children[1]);
+      chai
+        .expect(arg.findFirstTagInKey("b"))
+        .to.be.equal(arg.key[0].children[2]);
+      chai
+        .expect(arg.findFirstTagInKey("c"))
+        .to.be.equal(arg.key[0].children[3]);
+      chai.expect(arg.findFirstTagInKey("d")).to.be.null;
+    });
+
+    it("findLastTagInKey", function () {
+      var arg = new markyap.OptArg(
+        [
+          [
+            "text",
+            new markyap.Tag("a"),
+            new markyap.Tag("b"),
+            new markyap.Tag("c"),
+            new markyap.Tag("b"),
+          ],
+        ],
+        [
+          [
+            "more text",
+            new markyap.Tag("c"),
+            new markyap.Tag("c"),
+            new markyap.Tag("e"),
+          ],
+        ]
+      );
+
+      chai
+        .expect(arg.findLastTagInKey("a"))
+        .to.be.equal(arg.key[0].children[1]);
+      chai
+        .expect(arg.findLastTagInKey("b"))
+        .to.be.equal(arg.key[0].children[4]);
+      chai
+        .expect(arg.findLastTagInKey("c"))
+        .to.be.equal(arg.key[0].children[3]);
+      chai.expect(arg.findLastTagInKey("d")).to.be.null;
+    });
+
+    it("findAllTagsInKey", function () {
+      var arg = new markyap.OptArg(
+        [
+          [
+            "text",
+            new markyap.Tag("a"),
+            new markyap.Tag("b"),
+            new markyap.Tag("c"),
+            new markyap.Tag("b"),
+          ],
+        ],
+        [
+          [
+            "more text",
+            new markyap.Tag("c"),
+            new markyap.Tag("c"),
+            new markyap.Tag("e"),
+          ],
+        ]
+      );
+
+      chai
+        .expect(arg.findAllTagsInKey("a"))
+        .to.be.an("array")
+        .with.length(1)
+        .and.with.ordered.members([arg.key[0].children[1]]);
+      chai
+        .expect(arg.findAllTagsInKey("b"))
+        .to.be.an("array")
+        .with.length(2)
+        .and.with.ordered.members([
+          arg.key[0].children[2],
+          arg.key[0].children[4],
+        ]);
+      chai.expect(arg.findAllTagsInKey("d")).to.be.an("array").and.empty;
+    });
+
+    it("findFirstTagInValue", function () {
+      var arg = new markyap.OptArg(
+        [
+          [
+            "text",
+            new markyap.Tag("a"),
+            new markyap.Tag("b"),
+            new markyap.Tag("c"),
+            new markyap.Tag("b"),
+          ],
+        ],
+        [
+          [
+            "more text",
+            new markyap.Tag("c"),
+            new markyap.Tag("c"),
+            new markyap.Tag("e"),
+          ],
+        ]
+      );
+
+      chai.expect(arg.findFirstTagInValue("a")).to.be.null;
+      chai
+        .expect(arg.findFirstTagInValue("c"))
+        .to.be.equal(arg.value[0].children[1]);
+      chai
+        .expect(arg.findFirstTagInValue("e"))
+        .to.be.equal(arg.value[0].children[3]);
+    });
+
+    it("findLastTagInValue", function () {
+      var arg = new markyap.OptArg(
+        [
+          [
+            "text",
+            new markyap.Tag("a"),
+            new markyap.Tag("b"),
+            new markyap.Tag("c"),
+            new markyap.Tag("b"),
+          ],
+        ],
+        [
+          [
+            "more text",
+            new markyap.Tag("c"),
+            new markyap.Tag("c"),
+            new markyap.Tag("e"),
+          ],
+        ]
+      );
+
+      chai.expect(arg.findLastTagInValue("a")).to.be.null;
+      chai
+        .expect(arg.findLastTagInValue("c"))
+        .to.be.equal(arg.value[0].children[2]);
+      chai
+        .expect(arg.findLastTagInValue("e"))
+        .to.be.equal(arg.value[0].children[3]);
+    });
+
+    it("findAllTagsInValue", function () {
+      var arg = new markyap.OptArg(
+        [
+          [
+            "text",
+            new markyap.Tag("a"),
+            new markyap.Tag("b"),
+            new markyap.Tag("c"),
+            new markyap.Tag("b"),
+          ],
+        ],
+        [
+          [
+            "more text",
+            new markyap.Tag("c"),
+            new markyap.Tag("c"),
+            new markyap.Tag("e"),
+          ],
+        ]
+      );
+
+      chai.expect(arg.findAllTagsInValue("a")).to.be.an("array").and.empty;
+      chai
+        .expect(arg.findAllTagsInValue("c"))
+        .to.be.an("array")
+        .with.length(2)
+        .and.with.ordered.members([
+          arg.value[0].children[1],
+          arg.value[0].children[2],
+        ]);
+      chai
+        .expect(arg.findAllTagsInValue("e"))
+        .to.be.an("array")
+        .with.length(1)
+        .and.with.ordered.members([arg.value[0].children[3]]);
+    });
+  });
+
   describe("parser", function () {
     it("basic string", function () {
       var s = "hello, world!";
