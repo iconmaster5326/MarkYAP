@@ -76,14 +76,19 @@ function makeFormatter(dir, check = false) {
   }
 
   var fn = function () {
-    return gulp
+    var pipeline = gulp
       .src(
         FORMAT_TYPES.map((f) => dir + "/*." + f).concat(
           FORMAT_TYPES.map((f) => dir + "/.*." + f)
         )
       )
-      .pipe(cmd())
-      .pipe(gulp.dest(dir));
+      .pipe(cmd());
+
+    if (!check) {
+      pipeline = pipeline.pipe(gulp.dest(dir));
+    }
+
+    return pipeline;
   };
   Object.defineProperty(fn, "name", {
     value: "format " + dir + (check ? " check" : ""),
