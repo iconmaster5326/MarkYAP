@@ -65,35 +65,92 @@ class Tag {
 
   /**
    * Get a single positional or named argument.
+   * If you get a named argument, and there are multiple named arguments with the same key,
+   * the argument returned is arbitrary among them.
    *
    * @param {(number|string)} n The position of the aregument (if a number) or the key to find an argument via name by (if a string).
    * @returns {?(OptArg|PosArg)} The argument at that index or with that name, or null if not found.
    */
   argument(n) {
-    var arg;
-
     if (typeof n == "number") {
-      var i = 0;
-      for (arg of this.args) {
-        if (arg instanceof PosArg) {
-          if (i == n) {
-            return arg;
-          }
-          ++i;
-        }
+      var posargs = this.positionalArguments;
+      if (n < 0 || n >= posargs.length) {
+        return null;
+      } else {
+        return this.positionalArguments[n];
       }
-      return null;
     } else if (typeof n == "string") {
-      for (arg of this.args) {
-        if (arg instanceof OptArg && arg.keyText == n) {
-          return arg;
-        }
-      }
-      return null;
-    } else {
-      console.error("expected number or string: got ${typeof n}");
-      return null;
+      return this.firstNamedArgument(n);
     }
+  }
+
+  /**
+   * Get all the positional arguments given to this tag.
+   * @type {Array.<PosArg>}
+   */
+  get positionalArguments() {
+    return this.args.filter((a) => a instanceof PosArg);
+  }
+
+  /**
+   * Get all the named arguments given to this tag.
+   * @type {Array.<OptArg>}
+   */
+  get namedArguments() {
+    return this.args.filter((a) => a instanceof OptArg);
+  }
+
+  /**
+   * Get a map from keys to named argument.
+   * If there are multiple named arguments with the same key,
+   * an arbitrary one is placed in this map.
+   * @type {Object.<string,OptArg>}
+   */
+  get namedArgumentsMap() {
+    return Object.fromEntries(this.namedArguments.map((a) => [a.keyText, a]));
+  }
+
+  /**
+   * Finds the first named argument with a given key,
+   * or else returns null if no such key was found.
+   *
+   * @param {string} name The key to look up.
+   * @returns {?OptArg} The first argument with that key, or null.
+   */
+  firstNamedArgument(name) {
+    for (var arg of this.namedArguments) {
+      if (arg.keyText == name) {
+        return arg;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Finds the last named argument with a given key,
+   * or else returns null if no such key was found.
+   *
+   * @param {string} name The key to look up.
+   * @returns {?OptArg} The last argument with that key, or null.
+   */
+  lastNamedArgument(name) {
+    var result = null;
+    for (var arg of this.namedArguments) {
+      if (arg.keyText == name) {
+        result = arg;
+      }
+    }
+    return result;
+  }
+
+  /**
+   * Finds all the named arguments in a tag with the given key.
+   *
+   * @param {string} name The key to look up.
+   * @returns {Array.<OptArg>} A list of named arguments with that key.
+   */
+  allNamedArguments(name) {
+    return this.namedArguments.filter((a) => a.keyText == name);
   }
 }
 

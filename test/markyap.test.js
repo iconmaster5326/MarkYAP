@@ -150,28 +150,51 @@ describe("MarkYAP", function () {
     );
   });
 
-  describe("Tag.argument()", function () {
-    it("positional", function () {
-      var t = new markyap.Tag("name", [
-        new markyap.PosArg("1"),
-        new markyap.PosArg("2"),
-        new markyap.OptArg("3"),
-        new markyap.PosArg("4"),
-        new markyap.OptArg("5"),
-        new markyap.OptArg("6"),
-        new markyap.PosArg("7"),
-      ]);
+  describe("Tag", function () {
+    describe("argument", function () {
+      it("positional", function () {
+        var t = new markyap.Tag("name", [
+          new markyap.PosArg("1"),
+          new markyap.PosArg("2"),
+          new markyap.OptArg("3"),
+          new markyap.PosArg("4"),
+          new markyap.OptArg("5"),
+          new markyap.OptArg("6"),
+          new markyap.PosArg("7"),
+        ]);
 
-      chai.expect(t.argument(0)).to.be.equal(t.args[0]);
-      chai.expect(t.argument(1)).to.be.equal(t.args[1]);
-      chai.expect(t.argument(2)).to.be.equal(t.args[3]);
-      chai.expect(t.argument(3)).to.be.equal(t.args[6]);
+        chai.expect(t.argument(0)).to.be.equal(t.args[0]);
+        chai.expect(t.argument(1)).to.be.equal(t.args[1]);
+        chai.expect(t.argument(2)).to.be.equal(t.args[3]);
+        chai.expect(t.argument(3)).to.be.equal(t.args[6]);
 
-      chai.expect(t.argument(-1)).to.be.null;
-      chai.expect(t.argument(4)).to.be.null;
+        chai.expect(t.argument(-1)).to.be.null;
+        chai.expect(t.argument(4)).to.be.null;
+      });
+
+      it("named", function () {
+        var t = new markyap.Tag("name", [
+          new markyap.PosArg("1"),
+          new markyap.PosArg("2"),
+          new markyap.OptArg("3"),
+          new markyap.PosArg("4"),
+          new markyap.OptArg("5"),
+          new markyap.OptArg("6"),
+          new markyap.PosArg("7"),
+        ]);
+
+        chai.expect(t.argument("3")).to.be.equal(t.args[2]);
+        chai.expect(t.argument("5")).to.be.equal(t.args[4]);
+        chai.expect(t.argument("6")).to.be.equal(t.args[5]);
+
+        chai.expect(t.argument("")).to.be.null;
+        chai.expect(t.argument("1")).to.be.null;
+        chai.expect(t.argument("a")).to.be.null;
+        chai.expect(t.argument("3 ")).to.be.null;
+      });
     });
 
-    it("named", function () {
+    it("positionalArguments", function () {
       var t = new markyap.Tag("name", [
         new markyap.PosArg("1"),
         new markyap.PosArg("2"),
@@ -182,14 +205,110 @@ describe("MarkYAP", function () {
         new markyap.PosArg("7"),
       ]);
 
-      chai.expect(t.argument("3")).to.be.equal(t.args[2]);
-      chai.expect(t.argument("5")).to.be.equal(t.args[4]);
-      chai.expect(t.argument("6")).to.be.equal(t.args[5]);
+      chai
+        .expect(t.positionalArguments)
+        .to.be.an("array")
+        .with.length(4)
+        .and.has.ordered.members([t.args[0], t.args[1], t.args[3], t.args[6]]);
+    });
 
-      chai.expect(t.argument("")).to.be.null;
-      chai.expect(t.argument("1")).to.be.null;
-      chai.expect(t.argument("a")).to.be.null;
-      chai.expect(t.argument("3 ")).to.be.null;
+    it("namedArguments", function () {
+      var t = new markyap.Tag("name", [
+        new markyap.PosArg("1"),
+        new markyap.PosArg("2"),
+        new markyap.OptArg("3"),
+        new markyap.PosArg("4"),
+        new markyap.OptArg("5"),
+        new markyap.OptArg("6"),
+        new markyap.PosArg("7"),
+      ]);
+
+      chai
+        .expect(t.namedArguments)
+        .to.be.an("array")
+        .with.length(3)
+        .and.has.ordered.members([t.args[2], t.args[4], t.args[5]]);
+    });
+
+    it("namedArgumentsMap", function () {
+      var t = new markyap.Tag("name", [
+        new markyap.PosArg("1"),
+        new markyap.PosArg("2"),
+        new markyap.OptArg("3"),
+        new markyap.PosArg("4"),
+        new markyap.OptArg("5"),
+        new markyap.OptArg("6"),
+        new markyap.PosArg("7"),
+      ]);
+
+      var argmap = t.namedArgumentsMap;
+      chai
+        .expect(argmap)
+        .to.be.an("object")
+        .with.all.keys("3", "5", "6")
+        .and.not.any.keys("1", "2", "4", "7");
+      chai.expect(argmap["3"]).to.equal(t.args[2]);
+      chai.expect(argmap["5"]).to.equal(t.args[4]);
+      chai.expect(argmap["6"]).to.equal(t.args[5]);
+    });
+
+    it("firstNamedArgument", function () {
+      var t = new markyap.Tag("name", [
+        new markyap.OptArg("a"),
+        new markyap.OptArg("b"),
+        new markyap.OptArg("c"),
+        new markyap.OptArg("b"),
+      ]);
+
+      chai.expect(t.firstNamedArgument("a")).to.be.equal(t.args[0]);
+      chai.expect(t.firstNamedArgument("b")).to.be.equal(t.args[1]);
+      chai.expect(t.firstNamedArgument("c")).to.be.equal(t.args[2]);
+
+      chai.expect(t.firstNamedArgument("")).to.be.null;
+      chai.expect(t.firstNamedArgument("1")).to.be.null;
+      chai.expect(t.firstNamedArgument("d")).to.be.null;
+      chai.expect(t.firstNamedArgument("a ")).to.be.null;
+    });
+
+    it("lastNamedArgument", function () {
+      var t = new markyap.Tag("name", [
+        new markyap.OptArg("a"),
+        new markyap.OptArg("b"),
+        new markyap.OptArg("c"),
+        new markyap.OptArg("b"),
+      ]);
+
+      chai.expect(t.lastNamedArgument("a")).to.be.equal(t.args[0]);
+      chai.expect(t.lastNamedArgument("b")).to.be.equal(t.args[3]);
+      chai.expect(t.lastNamedArgument("c")).to.be.equal(t.args[2]);
+
+      chai.expect(t.lastNamedArgument("")).to.be.null;
+      chai.expect(t.lastNamedArgument("1")).to.be.null;
+      chai.expect(t.lastNamedArgument("d")).to.be.null;
+      chai.expect(t.lastNamedArgument("a ")).to.be.null;
+    });
+
+    it("allNamedArguments", function () {
+      var t = new markyap.Tag("name", [
+        new markyap.OptArg("a"),
+        new markyap.OptArg("b"),
+        new markyap.OptArg("c"),
+        new markyap.OptArg("b"),
+      ]);
+
+      chai
+        .expect(t.allNamedArguments("a"))
+        .to.be.an("array")
+        .with.length(1)
+        .and.has.ordered.members([t.args[0]]);
+
+      chai
+        .expect(t.allNamedArguments("b"))
+        .to.be.an("array")
+        .with.length(2)
+        .and.has.ordered.members([t.args[1], t.args[3]]);
+
+      chai.expect(t.allNamedArguments("d")).to.be.an("array").and.empty;
     });
   });
 
