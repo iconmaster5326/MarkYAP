@@ -159,5 +159,30 @@ describe("MarkYAP", function () {
       chai.expect(result[0].children).to.be.an("array").with.length(1);
       chai.expect(result[0].children[0]).to.be.a("string").and.equal(s);
     });
+
+    it("space compression", function () {
+      var result = markyap.parse("hello     world!");
+      chai.expect(result).to.be.an("array").with.length(1);
+      chai.expect(result[0].text).to.equal("hello world!");
+    });
+
+    it("newline compression", function () {
+      var result = markyap.parse("hello\n\n\n\n\n\n\n\n\n\nworld!");
+      chai.expect(result).to.be.an("array").with.length(2);
+      chai.expect(result[0].text).to.equal("hello");
+      chai.expect(result[1].text).to.equal("world!");
+    });
+
+    it("raw text tag", function () {
+      var result = markyap.parse("a\\*{ b }c");
+      chai.expect(result).to.be.an("array").with.length(1);
+      chai.expect(result[0].text).to.equal("a b c");
+    });
+
+    it("tags", function () {
+      var result = markyap.parse("\\a \\b{c} \\d[e=f] \\g{h}[i]");
+      chai.expect(result).to.be.an("array").with.length(1);
+      chai.expect(result[0].text).to.equal("\\a \\b{c} \\d[e=f] \\g{h}[i=]");
+    });
   });
 });

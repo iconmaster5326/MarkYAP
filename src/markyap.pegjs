@@ -1,7 +1,7 @@
 // imports are declared in the gulpfile, because pegjs is poop and doesn't support ES6 modules
 
 document
-  = value:(literalBackslash / rawTextTag / tag / any / "\\")* {
+  = value:(rawTextTag / literalBackslash / tag / any / "\\")* {
       var doc = paragraphify(value, location());
       postprocessList(doc);
       return doc;
@@ -40,7 +40,7 @@ positionalArgument
     }
 
 positionalArgumentInternals
-  = value:(literalBackslash / rawTextTag / tag / anyButPositionalArgumentEnd)* {
+  = value:(rawTextTag / literalBackslash / tag / anyButPositionalArgumentEnd)* {
       return paragraphify(value, location());
     }
 
@@ -49,21 +49,21 @@ optionalArgument
     key:optionalArgumentInternals1
     value:("=" optionalArgumentInternals2)?
     "]" {
-      return new OptArg(key, false, value == null ? [] : value[1], location());
+      return new OptArg(key, value == null ? [] : value[1], false, location());
     }
 
 optionalArgumentInternals1
-  = value:(literalBackslash / rawTextTag / tag / anyButOptionalArgumentEnd1)* {
+  = value:(rawTextTag / literalBackslash / tag / anyButOptionalArgumentEnd1)* {
       return paragraphify(value, location());
     }
 
 optionalArgumentInternals2
-  = value:(literalBackslash / rawTextTag / tag / anyButOptionalArgumentEnd2)* {
+  = value:(rawTextTag / literalBackslash / tag / anyButOptionalArgumentEnd2)* {
       return paragraphify(value, location());
     }
 
 rawPositionalArgument
-  = "*{" value:rawPositionalArgumentInternals "}" {
+  = "*" whitespace? "{" value:rawPositionalArgumentInternals "}" {
       return new PosArg(value, true, location());
     }
 
@@ -73,7 +73,9 @@ rawPositionalArgumentInternals
     }
 
 rawOptionalArgument
-  = "*["
+  = "*"
+    whitespace?
+    "["
     key:rawOptionalArgumentInternals1
     value:("=" rawOptionalArgumentInternals2)?
     "]" {

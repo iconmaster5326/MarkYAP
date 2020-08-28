@@ -31,7 +31,7 @@ function paragraphify(values /*, location*/) {
         if (s) {
           currentParagraph.push(s);
         }
-        result.push(currentParagraph);
+        result.push(new Paragraph(currentParagraph));
         currentParagraph = [];
         currentString = currentString.substring(i + 1);
       }
@@ -53,24 +53,28 @@ function paragraphify(values /*, location*/) {
   }
 
   // Compress down spaces
-  for (i = 0; i < result.length; ++i) {
-    if (typeof result[i] == "string") {
-      result[i] = result[i].replace(/\s+/g, " ");
+  for (var p of result) {
+    for (i = 0; i < p.children.length; ++i) {
+      if (typeof p.children[i] == "string") {
+        p.children[i] = p.children[i].replace(/\s+/g, " ");
+      }
     }
   }
 
   // Trim beginning and end of array
-  if (result.length == 1) {
-    if (typeof result[0] == "string") {
-      result[0] = result[0].trim();
-    }
-  } else {
-    for (i = 0; i < result.length; ++i) {
-      if (typeof result[i] == "string") {
-        if (i == 0) {
-          result[i] = result[i].trimBegin();
-        } else if (i == result.length - 1) {
-          result[i] = result[i].trimEnd();
+  for (p of result) {
+    if (p.children.length == 1) {
+      if (typeof p.children[0] == "string") {
+        p.children[0] = p.children[0].trim();
+      }
+    } else {
+      for (i = 0; i < p.children.length; ++i) {
+        if (typeof p.children[i] == "string") {
+          if (i == 0) {
+            p.children[i] = p.children[i].trimStart();
+          } else if (i == p.children.length - 1) {
+            p.children[i] = p.children[i].trimEnd();
+          }
         }
       }
     }
