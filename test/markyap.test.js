@@ -6,23 +6,25 @@ describe("MarkYAP", function () {
     describe("Tag", function () {
       it("default", function () {
         var v = new markyap.Tag("name", []);
-        chai.assert.deepEqual(v.name, "name");
-        chai.assert.deepEqual(v.args, []);
+        chai.expect(v.name).to.be.equal("name");
+        chai.expect(v.args).to.be.an("array").and.empty;
       });
 
       it("string", function () {
         var v = new markyap.Tag("name", "body");
-        chai.assert.deepEqual(v.name, "name");
-        chai.assert.strictEqual(v.args.length, 1);
-        chai.assert.ok(v.args[0] instanceof markyap.PosArg);
-        chai.assert.strictEqual(v.args[0].value.length, 1);
-        chai.assert.ok(v.args[0].value[0] instanceof markyap.Paragraph);
-        chai.assert.strictEqual(v.args[0].value[0].children.length, 1);
-        chai.assert.strictEqual(
-          typeof v.args[0].value[0].children[0],
-          "string"
-        );
-        chai.assert.strictEqual(v.args[0].value[0].children[0], "body");
+        chai.expect(v.name).to.be.equal("name");
+        chai.expect(v.args).to.be.an("array").with.length(1);
+        chai.expect(v.args[0]).to.be.an.instanceOf(markyap.PosArg);
+        chai.expect(v.args[0].value).to.be.an("array").with.length(1);
+        chai.expect(v.args[0].value[0]).to.be.an.instanceOf(markyap.Paragraph);
+        chai
+          .expect(v.args[0].value[0].children)
+          .to.be.an("array")
+          .with.length(1);
+        chai
+          .expect(v.args[0].value[0].children[0])
+          .to.be.a("string")
+          .and.equal("body");
       });
     });
   });
@@ -30,7 +32,7 @@ describe("MarkYAP", function () {
   describe("text() functions", function () {
     function test(name, input, output) {
       it(name, function () {
-        chai.assert.strictEqual(input.text, output);
+        chai.expect(input.text).to.be.equal(output);
       });
     }
 
@@ -63,14 +65,10 @@ describe("MarkYAP", function () {
     it("basic string", function () {
       var s = "hello, world!";
       var result = markyap.parse(s);
-      chai.assert.ok(result instanceof Array);
-      chai.assert.strictEqual(result.length, 1);
-      var p = result[0];
-      chai.assert.ok(p instanceof markyap.Paragraph);
-      chai.assert.strictEqual(p.children.length, 1);
-      var child = p.children[0];
-      chai.assert.strictEqual(typeof child, "string");
-      chai.assert.strictEqual(child, s);
+      chai.expect(result).to.be.an("array").with.length(1);
+      chai.expect(result[0]).to.be.an.instanceOf(markyap.Paragraph);
+      chai.expect(result[0].children).to.be.an("array").with.length(1);
+      chai.expect(result[0].children[0]).to.be.a("string").and.equal(s);
     });
   });
 });
