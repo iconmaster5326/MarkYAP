@@ -61,13 +61,13 @@ const bundle = gulp.series(parser, function bundleImpl() {
   };
 
   return gulp
-    .src("src/index.js")
+    .src("src/*.js")
     .pipe(webpack(WEBPACK_CONFIG))
     .pipe(gulp.dest("dist"));
 });
 
 function clean() {
-  return del(["dist"]);
+  return del(["dist", "docs", "coverage", "markyap-*.tgz"]);
 }
 
 const FORMAT_TYPES = ["js", "yaml", "yml", "pegjs", "md", "json"];
