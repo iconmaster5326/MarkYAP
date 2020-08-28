@@ -12,4 +12,3 @@ parserOptions:
 rules: {}
 plugins:
   - mocha
-  

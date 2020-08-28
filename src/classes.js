@@ -58,7 +58,9 @@ class Paragraph {
   }
 
   get text() {
-    return this.children.map((c) => typeof c == "string" ? c : c.text).join(" ");
+    return this.children
+      .map((c) => (typeof c == "string" ? c : c.text))
+      .join(" ");
   }
 }
 
