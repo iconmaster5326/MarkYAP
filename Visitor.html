@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>Documentation Classes</title>
+	<title>Documentation Class: Visitor</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -79,14 +79,19 @@
 		<div id="main">
 			
 
-	<h1 class="page-title">Classes</h1>
+	<h1 class="page-title">Class: Visitor</h1>
 <section>
 
 <header>
     
         <h2>
-        
+        Visitor
         </h2>
+        
+            <div class="class-description"><p>This implements the visitor design pattern for traversing MarkYAP documents.</p>
+<p>In the <a href="global.html#VisitorOptions">VisitorOptions</a> object, you maye specify several callbacks for entities in the MarkYAP document.
+The return value from your callbacks can also mutate the document.
+Use the replace and delete methods to specify what mutations to execute.</p></div>
         
     
 </header>
@@ -96,8 +101,228 @@
     <div class="container-overview">
     
         
+<hr>
+<dt>
+    <h4 class="name" id="Visitor"><span class="type-signature"></span>new Visitor(options)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Create a new Visitor.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
 
         
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#VisitorOptions">VisitorOptions</a></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The callbacks and options for this visitor.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    <dl>
+
+<table class="props table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#VisitorOptions">VisitorOptions</a></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The callbacks and options for this visitor.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+</dl>
+
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        <dl>
+            
+<hr>
+<dt>
+    <h4 class="name" id=".delete"><span class="type-signature">&lt;static> </span>delete()</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Indicates, as a return value from a callback,
+that you want to delete this node if it is part of an array.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
 <dl class="details">
     
 
@@ -137,44 +362,294 @@
 </dl>
 
 
-        
     
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".replace"><span class="type-signature">&lt;static> </span>replace(what)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Indicates, as a return value from a callback,
+that you want to replace this node with another.</p>
     </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>what</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>What to replace this node with.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
 
     
 
     
 
     
-        <h3 class="subsection-title">Classes</h3>
 
-        <dl>
-            <dt><a href="OptArg.html">OptArg</a></dt>
-            <dd></dd>
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
         
-            <dt><a href="Paragraph.html">Paragraph</a></dt>
-            <dd></dd>
+            
+<hr>
+<dt>
+    <h4 class="name" id="visit"><span class="type-signature"></span>visit(document)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Traverse a tag, paragraph, argument, or an array of any of the above.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
         
-            <dt><a href="PosArg.html">PosArg</a></dt>
-            <dd></dd>
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
         
-            <dt><a href="SyntaxError.html">SyntaxError</a></dt>
-            <dd></dd>
+        <th>Name</th>
         
-            <dt><a href="Tag.html">Tag</a></dt>
-            <dd></dd>
+
+        <th>Type</th>
+
         
-            <dt><a href="Visitor.html">Visitor</a></dt>
-            <dd></dd>
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>document</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type"><a href="Tag.html">Tag</a></span>
+|
+
+<span class="param-type"><a href="Paragraph.html">Paragraph</a></span>
+|
+
+<span class="param-type"><a href="PosArg.html">PosArg</a></span>
+|
+
+<span class="param-type"><a href="OptArg.html">OptArg</a></span>
+|
+
+<span class="param-type">Array.&lt;(string|<a href="Tag.html">Tag</a>|<a href="Paragraph.html">Paragraph</a>|<a href="PosArg.html">PosArg</a>|<a href="OptArg.html">OptArg</a>)></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The item to trasverse.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
         </dl>
-    
-
-    
-
-    
-
-    
-
     
 
     
