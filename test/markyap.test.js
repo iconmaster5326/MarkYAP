@@ -150,6 +150,49 @@ describe("MarkYAP", function () {
     );
   });
 
+  describe("Tag.argument()", function () {
+    it("positional", function () {
+      var t = new markyap.Tag("name", [
+        new markyap.PosArg("1"),
+        new markyap.PosArg("2"),
+        new markyap.OptArg("3"),
+        new markyap.PosArg("4"),
+        new markyap.OptArg("5"),
+        new markyap.OptArg("6"),
+        new markyap.PosArg("7"),
+      ]);
+
+      chai.expect(t.argument(0)).to.be.equal(t.args[0]);
+      chai.expect(t.argument(1)).to.be.equal(t.args[1]);
+      chai.expect(t.argument(2)).to.be.equal(t.args[3]);
+      chai.expect(t.argument(3)).to.be.equal(t.args[6]);
+
+      chai.expect(t.argument(-1)).to.be.null;
+      chai.expect(t.argument(4)).to.be.null;
+    });
+
+    it("named", function () {
+      var t = new markyap.Tag("name", [
+        new markyap.PosArg("1"),
+        new markyap.PosArg("2"),
+        new markyap.OptArg("3"),
+        new markyap.PosArg("4"),
+        new markyap.OptArg("5"),
+        new markyap.OptArg("6"),
+        new markyap.PosArg("7"),
+      ]);
+
+      chai.expect(t.argument("3")).to.be.equal(t.args[2]);
+      chai.expect(t.argument("5")).to.be.equal(t.args[4]);
+      chai.expect(t.argument("6")).to.be.equal(t.args[5]);
+
+      chai.expect(t.argument("")).to.be.null;
+      chai.expect(t.argument("1")).to.be.null;
+      chai.expect(t.argument("a")).to.be.null;
+      chai.expect(t.argument("3 ")).to.be.null;
+    });
+  });
+
   describe("parser", function () {
     it("basic string", function () {
       var s = "hello, world!";

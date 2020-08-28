@@ -1,5 +1,5 @@
 class Tag {
-  constructor(name, args, location) {
+  constructor(name, args = [], location) {
     this.name = name;
     this.args = args; // a list of PosArgs or OptArgs
     this.location = location;
@@ -30,10 +30,37 @@ class Tag {
     }
     return result;
   }
+
+  argument(n) {
+    var arg;
+
+    if (typeof n == "number") {
+      var i = 0;
+      for (arg of this.args) {
+        if (arg instanceof PosArg) {
+          if (i == n) {
+            return arg;
+          }
+          ++i;
+        }
+      }
+      return null;
+    } else if (typeof n == "string") {
+      for (arg of this.args) {
+        if (arg instanceof OptArg && arg.keyText == n) {
+          return arg;
+        }
+      }
+      return null;
+    } else {
+      console.error("expected number or string: got ${typeof n}");
+      return null;
+    }
+  }
 }
 
 class PosArg {
-  constructor(value, raw = false, location) {
+  constructor(value = [], raw = false, location) {
     this.value = value; // a list of Paragraphs
     this.raw = raw;
     this.location = location;
@@ -55,7 +82,7 @@ class PosArg {
 }
 
 class OptArg {
-  constructor(key, value, raw = false, location) {
+  constructor(key = [], value = [], raw = false, location) {
     this.key = key; // a list of Paragraphs
     this.value = value; // a list of Paragraphs
     this.raw = raw;
@@ -92,7 +119,7 @@ class OptArg {
 }
 
 class Paragraph {
-  constructor(children, location) {
+  constructor(children = [], location) {
     this.location = location;
 
     if (!(children instanceof Array)) {
