@@ -11,13 +11,22 @@
     var result = [];
     var currentString = "";
     var currentParagraph = [];
+
+    // Compress down newlines
+    for (var i = 0; i < values.length; ++i) {
+      if (typeof values[i] == "string") {
+        values[i] = values[i].replace(/\n\n+/g, "\n\n");
+      }
+    }
+
+    // Split up strings into paragraphs if they are separated by two or more newlines
     for (var e of values) {
       if (typeof e == "string") {
         currentString += e;
         while (true) {
           var i = currentString.indexOf("\n\n");
           if (i == -1) break;
-          var s = currentString.substring(0, i).trim();
+          var s = currentString.substring(0, i);
           if (s) {
             currentParagraph.push(s);
           }
@@ -26,21 +35,47 @@
           currentString = currentString.substring(i + 1);
         }
       } else {
-        var s = currentString.trim();
-        if (s) {
-          currentParagraph.push(s);
+        if (currentString) {
+          currentParagraph.push(currentString);
           currentString = "";
         }
         currentParagraph.push(e);
       }
     }
-    var s = currentString.trim();
-    if (s) {
-      currentParagraph.push(s);
+
+    // Ensure the trailing string/paragraph is in the result
+    if (currentString) {
+      currentParagraph.push(currentString);
     }
     if (currentParagraph) {
       result.push(new Paragraph(currentParagraph));
     }
+
+    // Compress down spaces
+    for (var i = 0; i < result.length; ++i) {
+      if (typeof result[i] == "string") {
+        result[i] = result[i].replace(/\s+/g, " ");
+      }
+    }
+
+    // Trim beginning and end of array
+    if (result.length == 1) {
+      if (typeof result[0] == "string") {
+        result[0] = result[0].trim();
+      }
+    } else {
+      for (var i = 0; i < result.length; ++i) {
+        if (typeof result[i] == "string") {
+          if (i == 0) {
+            result[i] = result[i].trimBegin();
+          } else if (i == result.length - 1) {
+            result[i] = result[i].trimEnd();
+          }
+        }
+      }
+    }
+
+    // All done
     return result;
   }
 

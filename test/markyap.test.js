@@ -36,11 +36,7 @@ describe("MarkYAP", function () {
       });
     }
 
-    test(
-      "basic string",
-      new markyap.Paragraph(["hello", "world"]),
-      "hello world"
-    );
+    test("basic string", new markyap.Paragraph(["hello world"]), "hello world");
     test(
       "tag",
       new markyap.Tag("tag", [
